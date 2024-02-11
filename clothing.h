@@ -1,6 +1,8 @@
 #ifndef CLOTHING_H
 #define CLOTHING_H
 #include "product.h"
+#include <iomanip>
+#include <sstream>
 
 class Clothing : public Product {
     public:

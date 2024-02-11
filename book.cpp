@@ -29,19 +29,22 @@ std::set<std::string> Book::keywords() const {
  */
 std::string Book::displayString() const {
     std::string bookInfo;
+    std::stringstream myStream;
     bookInfo += name_ + "\n";
     bookInfo += "Author: " + author_ + " ";
     bookInfo += "ISBN: " + isbn_ + "\n";
-    bookInfo += std::__cxx11::to_string(price_) + " " + std::__cxx11::to_string(qty_) + " left.";
+    myStream << std::fixed << std::setprecision(2) << price_;
+    bookInfo += myStream.str() + " " + std::__cxx11::to_string(qty_) + " left.";
 
     return bookInfo;
 }
 
 void Book::dump(std::ostream& os) const {
+    os << std::fixed << std::setprecision(2);
     os << category_ << std::endl;
     os << name_     << std::endl;
     os << price_    << std::endl;
     os << qty_      << std::endl;
-    os << author_   << std::endl;
     os << isbn_     << std::endl;
+    os << author_   << std::endl;
 }

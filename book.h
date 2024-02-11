@@ -1,6 +1,8 @@
 #ifndef BOOK_H
 #define BOOK_H
 #include "product.h"
+#include <iomanip>
+#include <sstream>
 
 class Book : public Product {
     public:

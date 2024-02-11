@@ -29,15 +29,18 @@ std::set<std::string> Clothing::keywords() const {
 
 std::string Clothing::displayString() const {
     std::string clothingInfo;
+    std::stringstream myStream;
     clothingInfo += name_ + "\n";
-    clothingInfo += "Brand: " + brand_ + " ";
-    clothingInfo += "Size: " + size_ + "\n";
-    clothingInfo += std::__cxx11::to_string(price_) + " " + std::__cxx11::to_string(qty_) + " left.";
+    clothingInfo += "Size: " + size_ + " ";
+    clothingInfo += "Brand: " + brand_ + "\n";
+    myStream << std::fixed << std::setprecision(2) << price_;
+    clothingInfo += myStream.str() + " " + std::__cxx11::to_string(qty_) + " left.";
 
     return clothingInfo;
 }
 
 void Clothing::dump(std::ostream& os) const {
+    os << std::fixed << std::setprecision(2);
     os << category_   << std::endl;
     os << name_       << std::endl;
     os << price_      << std::endl;
