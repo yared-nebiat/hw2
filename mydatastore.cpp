@@ -1,6 +1,19 @@
 #include "mydatastore.h"
 #include "util.h"
 
+MyDataStore::MyDataStore() {
+
+}
+MyDataStore::~MyDataStore() {
+    for(size_t i=0; i<products_.size(); i++) {
+        delete products_[i];
+    }
+    std::map<std::string, User*>::iterator it;
+    for(it=users_.begin(); it!=users_.end(); ++it) {
+        delete it->second;
+    }
+    users_.clear();
+}
 
 /**
  * Adds a product to the data store
@@ -13,7 +26,7 @@ void MyDataStore::addProduct(Product* p) {
  * Adds a user to the data store
  */
 void MyDataStore::addUser(User* u) {
-    std::string username = u->getName();
+    std::string username = convToLower(u->getName());
     users_[username] = u;
 }
 
@@ -34,11 +47,10 @@ void MyDataStore::viewCart(const std::string& username) {
         return;
     }
     std::queue<Product*> userCartCopy = userCarts_[username];
-    std::cout << username << "'s Cart" << std::endl;
 
     int idx = 1;
     while(!userCartCopy.empty()) {
-        std::cout << idx << ": " << userCartCopy.front()->displayString() << std::endl;
+        std::cout << "Item " << idx << std::endl << userCartCopy.front()->displayString() << std::endl;
         userCartCopy.pop();
         idx++;
     }
@@ -51,8 +63,9 @@ void MyDataStore::buyCart(const std::string& username) {
     }
 
     std::queue<Product*>& userCart = userCarts_[username];
+    std::queue<Product*> tempCart;
 
-    for(size_t i=0; i<userCart.size(); i++) {
+    while(!userCart.empty()) {
         Product* item = userCart.front();
         if(item->getQty() > 0 && users_[username]->getBalance() >= item->getPrice()) {
             userCart.pop();
@@ -61,9 +74,10 @@ void MyDataStore::buyCart(const std::string& username) {
         }
         else {
             userCart.pop();
-            userCart.push(item);
+            tempCart.push(item);
         }
     }
+    userCart = tempCart;
 }
 
 
@@ -109,11 +123,12 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
 
 
     std::set<Product*>::iterator it;
+    searchResults_.clear();
 
     for(it=searchResults.begin(); it != searchResults.end(); ++it) {
         finalResult.push_back(*it);
+        searchResults_.push_back(*it);
     }
-    searchResults_ = finalResult;
 
     return finalResult;
 

@@ -14,8 +14,7 @@ std::set<std::string> Movie::keywords() const {
 
     std::set<std::string> keyWords;
     keyWords = parseStringToWords(name_);
-    keyWords.insert(rating_);
-    keyWords.insert(genre_);
+    keyWords.insert(convToLower(genre_));
 
     return keyWords;
 
@@ -27,15 +26,18 @@ std::set<std::string> Movie::keywords() const {
 
 std::string Movie::displayString() const {
     std::string movieInfo;
+    std::stringstream myStream;
     movieInfo += name_ + "\n";
     movieInfo += "Genre: " + genre_ + " ";
     movieInfo += "Rating: " + rating_ + "\n";
-    movieInfo += std::__cxx11::to_string(price_) + " " + std::__cxx11::to_string(qty_) + " left.";
+    myStream << std::fixed << std::setprecision(2) << price_;
+    movieInfo += myStream.str() + " " + std::__cxx11::to_string(qty_) + " left.";
 
     return movieInfo;
 }
 
 void Movie::dump(std::ostream& os) const {
+    os << std::fixed  << std::setprecision(2);
     os << category_   << std::endl;
     os << name_       << std::endl;
     os << price_      << std::endl;

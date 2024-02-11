@@ -1,6 +1,8 @@
 #ifndef MOVIE_H
 #define MOVIE_H
 #include "product.h"
+#include <iomanip>
+#include <sstream>
 
 class Movie : public Product {
     public:
